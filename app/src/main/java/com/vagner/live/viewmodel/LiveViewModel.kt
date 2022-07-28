@@ -3,19 +3,18 @@ package com.vagner.live.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.vagner.live.models.LiveItem
-import com.vagner.live.webservice.StartRetrofit
+import com.vagner.live.repository.LiveRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LiveViewModel() : ViewModel() {
+class LiveViewModel(private val repository: LiveRepository) : ViewModel() {
 
-    private val repository by lazy { StartRetrofit.init() }
     val liveList = MutableLiveData<List<LiveItem>>()
     val errorMessage = MutableLiveData<String>()
 
     fun getAllLives(){
-       repository.getLive().enqueue(object : Callback<List<LiveItem>>{
+       repository.getAllLives().enqueue(object : Callback<List<LiveItem>>{
            override fun onResponse(call: Call<List<LiveItem>>, response: Response<List<LiveItem>>) {
                liveList.postValue(response.body())
            }

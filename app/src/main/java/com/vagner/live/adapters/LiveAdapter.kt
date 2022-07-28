@@ -13,9 +13,9 @@ class LiveAdapte(
 ) :
     RecyclerView.Adapter<LiveAdapte.LiveViewHolder>() {
 
-    var lives: List<LiveItem> = emptyList()
+    var lives = emptyList<LiveItem>()
         set(value) {
-            field = value
+           field = value
             notifyDataSetChanged()
         }
 

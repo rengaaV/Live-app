@@ -12,5 +12,21 @@ interface RetrofitService {
     @GET("lista-lives.json")
     fun getLive() : Call<List<LiveItem>>
 
+    companion object{
+
+        private val retrofitService: RetrofitService by lazy {
+
+            val retrofit = Retrofit.Builder()
+                .baseUrl("https://d3c0cr0sze1oo6.cloudfront.net/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            retrofit.create(RetrofitService::class.java)
+        }
+
+        fun Init(): RetrofitService {
+            return retrofitService
+        }
+    }
+
 
 }

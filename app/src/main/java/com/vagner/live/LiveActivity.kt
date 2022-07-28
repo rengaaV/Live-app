@@ -2,17 +2,18 @@ package com.vagner.live
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.vagner.live.adapters.LiveAdapte
 import com.vagner.live.databinding.ActivityLiveBinding
-import com.vagner.live.models.LiveItem
+import com.vagner.live.repository.LiveRepository
 import com.vagner.live.viewmodel.LiveViewModel
+import com.vagner.live.viewmodel.LiveViewModelFactory
+import com.vagner.live.webservice.RetrofitService
 
 class LiveActivity : AppCompatActivity() {
 
@@ -22,23 +23,21 @@ class LiveActivity : AppCompatActivity() {
         openLink(it.link)
     }
 
-
     lateinit var viewModel: LiveViewModel
 
     private lateinit var binding: ActivityLiveBinding
 
+    private var retrofitService = RetrofitService.Init()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLiveBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-
-
-
-        viewModel = ViewModelProvider(this).get(LiveViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            LiveViewModelFactory(LiveRepository(retrofitService))
+        ).get(LiveViewModel::class.java)
 
         binding.recyclerview.adapter = adapterLive
     }
